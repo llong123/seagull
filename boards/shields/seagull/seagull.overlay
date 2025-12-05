@@ -15,7 +15,7 @@
             RC(0,0) RC(0,1) RC(0,2) RC(0,3) 
             RC(1,0) RC(1,1) RC(1,2) RC(1,3) 
             RC(2,0) RC(2,1) RC(2,2) RC(2,3) 
-            RC(3,1) RC(3,2) RC(3,3) 
+            RC(3,0) RC(3,1) RC(3,2) RC(3,3) 
         >;
     };
  
@@ -24,16 +24,32 @@
         diode-direction = "col2row";
         wakeup-source;
 
-	    row-gpios = <&pro_micro 31 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-                , <&pro_micro 29 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-                , <&pro_micro 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-                , <&pro_micro 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+	    row-gpios = <&pro_micro 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+                , <&pro_micro 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+                , <&pro_micro 19 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+                , <&pro_micro 18 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
 
         col-gpios
-                = <&pro_micro 9 GPIO_ACTIVE_HIGH>
-                , <&pro_micro 10 GPIO_ACTIVE_HIGH>
-                , <&pro_micro 11 GPIO_ACTIVE_HIGH>
-                , <&pro_micro 13 GPIO_ACTIVE_HIGH>;
+                = <&pro_micro 10 GPIO_ACTIVE_HIGH>
+                , <&pro_micro 16 GPIO_ACTIVE_HIGH>
+                , <&pro_micro 14 GPIO_ACTIVE_HIGH>
+                , <&pro_micro 15 GPIO_ACTIVE_HIGH>;
+    };
+
+    /* Encoder */
+    encoder0: encoder0 {
+        compatible = "zmk,encoder";
+        a-gpios = <&pro_micro 9 GPIO_ACTIVE_LOW>;
+        b-gpios = <&pro_micro 8 GPIO_ACTIVE_LOW>;
+        steps = <4>;
+    };
+
+
+    physical_layout0: physical_layout_0 { // First physical layout, use different naming for other layouts
+        compatible = "zmk,physical-layout";
+        display-name = "Default Layout";
+        kscan = <&kscan0>; // Label of the kscan node, optional if all layouts use the same
+        transform = <&default_transform>; // Label of the matrix transform for this layout
     };
 };
 &pro_micro_i2c {
@@ -53,23 +69,5 @@
         com-sequential;
         inversion-on;
         prechargep = <0x22>;
-    };
-};
-
-
-/* Encoder */
-encoder0: encoder0 {
-    compatible = "zmk,encoder";
-    a-gpios = <&gpio1 6 GPIO_ACTIVE_LOW>;
-    b-gpios = <&gpio1 4 GPIO_ACTIVE_LOW>;
-    steps = <4>;
-};
-
-/ {
-    physical_layout0: physical_layout_0 { // First physical layout, use different naming for other layouts
-        compatible = "zmk,physical-layout";
-        display-name = "Default Layout";
-        kscan = <&kscan0>; // Label of the kscan node, optional if all layouts use the same
-        transform = <&default_transform>; // Label of the matrix transform for this layout
     };
 };
